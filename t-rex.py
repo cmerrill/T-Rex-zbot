@@ -84,7 +84,7 @@ if __name__ == "__main__":
            
             contents = m.fields[1]
             print "Got message: " + contents
-            time.sleep(random_with_variance(5,2))
+            time.sleep(random_with_variance(3,2))
             
             responded = False
             for s in special_messages.keys():
