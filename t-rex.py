@@ -23,7 +23,8 @@ hello_variance = 5
 # Initialize the zephyr library
 zephyr.init()
 # Subscribe to messages
-zephyr.sub(zclass,"*","*");
+subs = zephyr.Subscriptions()
+subs.add((zclass,"*","*"));
 
 def random_with_variance(center,variance):
     return center + ((2*variance)*random.random() - variance)
@@ -67,14 +68,15 @@ if __name__ == "__main__":
         
         m = zephyr.receive()
         
-        if m != None and random.random() < respond_prob:
-            contents = m.message
-            
+        if m != None and m.sender != "t-rex" and random.random() < respond_prob:
+            contents = m.fields[1]
+            print "Responding to message: " + contents
             time.sleep(random_with_variance(5,2))
             
-            if contents.lower().find("cuddle") or contents.lower().find("cuddly"):
+            if contents.lower().find("cuddle") > 0 or contents.lower().find("cuddly") > 0:
+                print "Cuddling with user!"
                 cuddle(m.instance)
             else:
-                say_hello(m.instance)
+                print "Saying hello!\nMessage: " + say_hello(m.instance)
         
         time.sleep(1)
