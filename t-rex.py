@@ -6,7 +6,7 @@ import random
 debug=False
 # Define some general zephyr configuration variables
 zclass = "t-rex"
-zinstance = "test"
+zinstance = "personal"
 zsender = "t-rex"
 zsig = "T. Rex"
 # Variables that affect the frequency of t-rex messages
