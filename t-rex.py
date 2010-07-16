@@ -13,14 +13,20 @@ MINUTE = 60
 SECOND = 1
 hello_interval = 4*HOUR
 hello_variance = 1*HOUR
+respond_prob = 0.85
 # Variables that affect the hello messages (words multipled by relative frequencies)
-hello_components = ["rawr! "] + ["rawr"]*5 + ["raawr"]*3 + ["raaawr"]*2 + ["raaaawr"]*2 + ["RAWR"] + ["rawr. "]*2 + \
-                   ["RAAAAAWR! "] + ["/raawr/"] + ["\n"]
-hello_avg_length = 5
-hello_variance = 3
+hello_components = ["rawr! "] + ["rawr"]*5 + ["raawr"]*3 + ["raaawr"]*2 + ["raaaawr"]*3 + ["RAWR"] + ["rawr. "]*2 + \
+                   ["RAAAAAWR!\n"] + ["/raawr/"] + ["\n"]
+hello_avg_length = 7
+hello_variance = 5
 
 # Initialize the zephyr library
 zephyr.init()
+# Subscribe to messages
+zephyr.sub(zclass,"*","*");
+
+def random_with_variance(center,variance):
+    return center + ((2*variance)*random.random() - variance)
 
 # Send a zephyr as t-rex, on the given instance
 def send_trex_zephyr(message, inst=zinstance):
@@ -28,7 +34,7 @@ def send_trex_zephyr(message, inst=zinstance):
 
 # Generate a random hello message.
 def generate_hello(parts=hello_components, length=hello_avg_length, variance=hello_variance):
-    size = int(length + ((2*variance)*random.random() - variance))
+    size = int(random_with_variance(length,variance))
     message = ""
     for i in range(size):
         message =  message + " " + random.choice(parts)
@@ -36,17 +42,17 @@ def generate_hello(parts=hello_components, length=hello_avg_length, variance=hel
     return message
 
 # Say "hello" in trex-speak
-def say_hello():
+def say_hello(instance = zinstance):
     message = generate_hello()
-    print "Message = " + message
-    send_trex_zephyr(message)
+    send_trex_zephyr(message, instance)
+    return message
 
 # Cuddle with user
-def cuddle():
-    send_trex_zephyr("raaawr *cuddles*")
+def cuddle(instance = "cuddles"):
+    send_trex_zephyr("raaawr *cuddles*", instance)
 
 def time_to_send(init_time,interval,variance):
-    delta = interval + ((2*variance)*random.random() - variance)
+    delta = random_with_variance(interval,variance)
     return (time.time() - init_time > delta)
 
 # Do this if we're being run as a script (and not imported)
@@ -56,7 +62,19 @@ if __name__ == "__main__":
     while True:
         if time_to_send(last_send, hello_interval, hello_variance):
             print "Saying hello!"
-            say_hello()
+            print "Message: " + say_hello()
             last_send = time.time()
         
-        time.sleep(3)
+        m = zephyr.receive()
+        
+        if m != None and random.random() < respond_prob:
+            contents = m.message
+            
+            time.sleep(random_with_variance(5,2))
+            
+            if contents.lower().find("cuddle") or contents.lower().find("cuddly"):
+                cuddle(m.instance)
+            else:
+                say_hello(m.instance)
+        
+        time.sleep(1)
