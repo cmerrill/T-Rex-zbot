@@ -1,0 +1,19 @@
+================
+Running trexbot
+================
+
+trexbot requires the python-zephyr module, found at:
+http://github.com/ebroder/python-zephyr
+
+Make sure you have tickets, and then run 'python t-rex.py'
+
+===============
+Configuration
+===============
+Most useful configuration options are listed at the top of the python file.
+The most important ones to touch are the zsender and the zclass, which
+indicate to what class and as whom the bot will zephyr.
+
+The special_messages dictionary is useful to allow your bot to respond in
+a special manner when keywords are sent.  The key is the keyword, and the 
+value is the sent message.
