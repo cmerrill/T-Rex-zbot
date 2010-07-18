@@ -25,7 +25,7 @@ hello_variance = 5
 special_messages = {"cuddle":"raaawr *cuddles*",
                     "cuddly":"raaawr *cuddles*",
                     "dance":"rawr! *dance dance*",
-                    ":(":"alligatorface",
+                    ":(":"*alligatorface*",
                     ":/":"rawr... :/",
                     "tasty":"*NOM NOM NOM*",
                     "sleep":"*enters pillow mode*"}
