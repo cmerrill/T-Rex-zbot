@@ -25,8 +25,10 @@ hello_variance = 5
 special_messages = {"cuddle":"raaawr *cuddles*",
                     "cuddly":"raaawr *cuddles*",
                     "dance":"rawr! *dance dance*",
-                    "alligatorface":":(",
-                    ":/":"rawr...\n:/"}
+                    ":(":"alligatorface",
+                    ":/":"rawr... :/",
+                    "tasty":"*NOM NOM NOM*",
+                    "sleep":"*enters pillow mode*"}
 
 # Initialize the zephyr library
 zephyr.init()
