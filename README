@@ -4,7 +4,7 @@ Running trexbot
 trexbot requires the python-zephyr module, found at:
 http://github.com/ebroder/python-zephyr
 
-Make sure you have tickets, and then run 'python t-rex.py'
+Make sure you have tickets, and then run 'python t_rex.py'
 
 ===============
 Configuration
