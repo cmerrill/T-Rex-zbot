@@ -21,14 +21,19 @@ hello_components = ["rawr! "] + ["rawr"]*5 + ["raawr"]*3 + ["raaawr"]*2 + ["raaa
                    ["RAAAAAWR!\n"] + ["/raawr/"] + ["rawr\n"]
 hello_avg_length = 7
 hello_variance = 5
+
+# Function for simple string matching for special-case messages
+matches = lambda x: lambda y: y.lower().find(x) >= 0
+# Function for simple string output for special message responses
+p = lambda x: lambda y: x
 # Variables that define special-case message responses
-special_messages = {"cuddle":"raaawr *cuddles*",
-                    "cuddly":"raaawr *cuddles*",
-                    "dance":"rawr! *dance dance*",
-                    ":(":"*alligatorface*",
-                    ":/":"rawr... :/",
-                    "tasty":"*NOM NOM NOM*",
-                    "sleep":"*enters pillow mode*"}
+special_messages = {matches("cuddle"):p("raaawr *cuddles*"),
+                    matches("cuddly"):p("raaawr *cuddles*"),
+                    matches("dance"):p("rawr! *dance dance*"),
+                    matches(":("):p("*alligatorface*"),
+                    matches(":/"):p("rawr... :/"),
+                    matches("tasty"):p("*NOM NOM NOM*"),
+                    matches("sleep"):p("*enters pillow mode*")}
 
 # Initialize the zephyr library
 zephyr.init()
@@ -61,7 +66,8 @@ def say_hello(instance = zinstance):
 
 # [Special action] with user
 def send_special(key,instance="personal"):
-    message = special_messages[key]
+    message_generator = special_messages[key]
+    message = message_generator(instance)
     send_trex_zephyr(message, instance)
     return message
 
@@ -89,9 +95,9 @@ if __name__ == "__main__":
             time.sleep(random_with_variance(3,2))
             
             responded = False
-            for s in special_messages.keys():
-                if contents.lower().find(s) >= 0:
-                    print "Responding to keyword with: " + send_special(s,m.instance)
+            for match in special_messages.keys():
+                if match(contents):
+                    print "Responding to keyword with: " + send_special(match,m.instance)
                     responded = True
                     break;
 
