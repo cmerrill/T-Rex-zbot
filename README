@@ -1,8 +1,10 @@
 ================
 Running trexbot
 ================
-trexbot requires the python-zephyr module, found at:
-http://github.com/ebroder/python-zephyr
+trexbot requires the python-zephyr module, which is included in this
+branch (include-i386-zephyr).  If you are not on the correct platform or 
+get errors when importing, you should install the python-zephyr module 
+found at http://github.com/ebroder/python-zephyr.
 
 Make sure you have tickets, and then run 'python t_rex.py'
 
