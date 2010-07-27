@@ -12,7 +12,7 @@ HOUR = 60*60
 MINUTE = 60
 SECOND = 1
 hello_interval = 4*HOUR
-hello_variance = 1*HOUR
+hello_interval_variance = 2*HOUR
 respond_prob = 0.95
 
 # Variables that affect the hello messages (words multipled by relative frequencies)

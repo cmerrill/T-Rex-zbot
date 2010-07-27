@@ -33,11 +33,6 @@ def send_special(key,instance="personal"):
     send_trex_zephyr(message, instance)
     return message
 
-# Has it been long enough to send a message?
-def time_to_send(init_time,interval,variance):
-    delta = random_with_variance(interval,variance)
-    return (time.time() - init_time > delta)
-
 # Do this if we're being run as a script (and not imported)
 if __name__ == "__main__":
     # Initialize the zephyr library
@@ -47,12 +42,13 @@ if __name__ == "__main__":
     subs.add((config.zclass,"*","*"));
     
     last_send = 0
-    
+    next_send = 0
     while True:
-        if time_to_send(last_send, config.hello_interval, config.hello_variance):
+        if time.time() - last_send > next_send:
             print "Saying hello!\nMessage: " + say_hello()
             last_send = time.time()
-        
+            next_send = random_with_variance(config.hello_interval, config.hello_interval_variance)
+            print "Sending next automatic message in " + str(float(next_send)/config.HOUR) + " hours."
         m = zephyr.receive()
         
         if m != None and m.sender != config.zsender and m.cls == config.zclass and \
